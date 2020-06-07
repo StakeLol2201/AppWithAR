@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.google.ar.core.Anchor;
 
+import com.google.ar.core.Config;
+import com.google.ar.core.Session;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         transformableNode.select();
 
-    }
+        
+
+        }
 
 }

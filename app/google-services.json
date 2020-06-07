@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1099249716618",
+    "firebase_url": "https://solid-scope-279500.firebaseio.com",
+    "project_id": "solid-scope-279500",
+    "storage_bucket": "solid-scope-279500.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099249716618:android:ab88942d2d382255104c73",
+        "android_client_info": {
+          "package_name": "com.example.arapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1099249716618-9ibta6u5bgbg2bci0c7b5pf5n688toa6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.arapp",
+            "certificate_hash": "768e21d9fab9a492ed17ee9df24a1cbc4c1e6203"
+          }
+        },
+        {
+          "client_id": "1099249716618-1k90h5vtj66n4h82apdshf9sinjkv4i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6QX6fDKwxdlhlhkvLI0Mfe5Dnh0w8Vwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1099249716618-1k90h5vtj66n4h82apdshf9sinjkv4i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
