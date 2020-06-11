@@ -9,15 +9,13 @@ import android.os.Bundle;
 
 import com.google.ar.core.Anchor;
 
-import com.google.ar.core.Config;
-import com.google.ar.core.Session;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 
-public class MainActivity extends AppCompatActivity {
+public class ARActivity extends AppCompatActivity {
 
     private ArFragment arFragment;
 
@@ -32,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
             Anchor anchor = hitResult.createAnchor();
 
             ModelRenderable.builder()
-                    .setSource(MainActivity.this, Uri.parse("arcticfox.sfb"))
+                    .setSource(ARActivity.this, Uri.parse("arcticfox.sfb"))
                     .build()
                     .thenAccept(modelRenderable -> addModelToScene(anchor, modelRenderable))
                     .exceptionally(throwable -> {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ARActivity.this);
                         builder.setMessage(throwable.getMessage())
                                 .show();
                         return null;

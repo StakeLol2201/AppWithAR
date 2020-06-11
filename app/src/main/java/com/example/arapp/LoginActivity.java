@@ -84,10 +84,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            /*En caso de realizar un exitoso inicio de sesión, se recargará la pantalla, dónde se mostrará
+                                la pantalla de proyección AR*/
+
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
+
+                            /* En caso de no poder iniciar sesión, se mostrará un mensaje de error y no cambiará la pantalla*/
+
                         }
                         hideProgressDialog();
                     }
@@ -97,6 +104,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        /*Función para realizar el inicio de sesión con la autenticación de Google*/
+
     }
 
     private void signOut() {
@@ -108,6 +118,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         updateUI(null);
                     }
                 });
+
+        /*Función para realizar el Log Out o Sign Out dentro de la aplicación*/
+
     }
 
     private void revokeAccess() {
@@ -119,18 +132,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         updateUI(null);
                     }
                 });
+
+        /*Función para revocar los accesos del usuario ya ingresado.*/
+
     }
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
             Toast.makeText(this, "Se ha iniciado sesión como " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-            Intent launchIntent = new Intent(this, MainActivity.class);
+            Intent launchIntent = new Intent(this, ARActivity.class);
             startActivityForResult(launchIntent, 0);
+
+            /*En caso de ya existir un usuario con una sesión iniciada en el dispositivo, se
+                    mostrará inmediatamente la página de proyección AR*/
+
         } else {
             mStatusTextView.setText(R.string.signed_out);
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
+
+            /*En caso de no existir una sesión iniciada, se mostrará la pantalla de Log In
+              en donde se deberá iniciar sesión utilizando el sistema de autenticación de
+              Google*/
         }
     }
 

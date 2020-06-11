@@ -22,10 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChooserActivity"/>
         <activity android:name=".BaseActivity" />
-        <activity android:name=".GoogleSignInActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ARActivity" />
 
         <meta-data
             android:name="com.google.ar.core"
