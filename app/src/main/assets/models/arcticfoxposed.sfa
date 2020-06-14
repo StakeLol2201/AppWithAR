@@ -4,7 +4,7 @@
       name: 'ArcticFox_Posed_initialShadingGroup',
       parameters: [
         {
-          baseColor: null,
+          baseColor: 'arcticfoxdiffuse',
         },
         {
           baseColorTint: [
@@ -15,13 +15,22 @@
           ],
         },
         {
-          metallic: 1,
+          metallic: 2,
         },
         {
           roughness: 1,
         },
         {
           opacity: null,
+        },
+        {
+          clearCoat: 0,
+        },
+        {
+         ambientOcclusion: 0,
+        },
+        {
+         normal: 0,
         },
       ],
       source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
@@ -34,10 +43,17 @@
       'Orientation',
     ],
     collision: {},
-    file: 'sampledata/models/arcticfox.obj',
-    name: 'arcticfox',
+    file: 'src/main/assets/models/arcticfoxposed.obj',
+    name: 'arcticfoxposed',
     recenter: 'root',
-    scale: 0.05,
+    scale: 0.1,
   },
+  samplers: [
+    {
+      file: 'src/main/assets/models\\arcticfoxdiffuse.png',
+      name: 'arcticfoxdiffuse',
+      pipeline_name: 'arcticfoxdiffuse.png',
+    },
+  ],
   version: '0.54:2',
 }

@@ -21,10 +21,6 @@ public class BaseActivity extends AppCompatActivity {
             mProgressDialog.setIndeterminate(true);
         }
         mProgressDialog.show();
-
-        /*  Al momento de seleccionar la cuenta que se utilizará para realizar el inicio de sesión, se mostrará
-        *   un mensaje sobre la pantalla con ícono de carga */
-
     }
 
     public void hideProgressDialog() {
@@ -37,9 +33,6 @@ public class BaseActivity extends AppCompatActivity {
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-            /*  Al momento de realizar el Log In, se impedirá abrir el teclado  */
-
         }
     }
 

@@ -17,11 +17,17 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -33,10 +39,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
 
+    private DatabaseReference mDatabase;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.webclientid_google))
@@ -47,6 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.disconnectButton).setOnClickListener((View.OnClickListener) this);
         mStatusTextView = findViewById(R.id.status);
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -84,17 +97,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-
-                            /*En caso de realizar un exitoso inicio de sesión, se recargará la pantalla, dónde se mostrará
-                                la pantalla de proyección AR*/
-
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
-
-                            /* En caso de no poder iniciar sesión, se mostrará un mensaje de error y no cambiará la pantalla*/
-
                         }
                         hideProgressDialog();
                     }
@@ -104,9 +110,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
-        /*Función para realizar el inicio de sesión con la autenticación de Google*/
-
     }
 
     private void signOut() {
@@ -118,9 +121,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         updateUI(null);
                     }
                 });
-
-        /*Función para realizar el Log Out o Sign Out dentro de la aplicación*/
-
     }
 
     private void revokeAccess() {
@@ -132,29 +132,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         updateUI(null);
                     }
                 });
-
-        /*Función para revocar los accesos del usuario ya ingresado.*/
-
     }
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
+
+            writeUser(user.getEmail(), user.getDisplayName(), user.getPhoneNumber());
+
             Toast.makeText(this, "Se ha iniciado sesión como " + user.getDisplayName(), Toast.LENGTH_LONG).show();
             Intent launchIntent = new Intent(this, ARActivity.class);
             startActivityForResult(launchIntent, 0);
-
-            /*En caso de ya existir un usuario con una sesión iniciada en el dispositivo, se
-                    mostrará inmediatamente la página de proyección AR*/
-
         } else {
             mStatusTextView.setText(R.string.signed_out);
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
-
-            /*En caso de no existir una sesión iniciada, se mostrará la pantalla de Log In
-              en donde se deberá iniciar sesión utilizando el sistema de autenticación de
-              Google*/
         }
     }
 
@@ -168,6 +160,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.disconnectButton) {
             revokeAccess();
         }
+    }
+
+    private void writeUser(String email, String username, String phone) {
+        Post post = new Post();
+        mDatabase.child("usuarios").child(email).setValue(post);
     }
 
 }
