@@ -138,7 +138,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         hideProgressDialog();
         if (user != null) {
 
-            writeUser(user.getEmail(), user.getDisplayName(), user.getPhoneNumber());
+            saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
 
             Toast.makeText(this, "Se ha iniciado sesión como " + user.getDisplayName(), Toast.LENGTH_LONG).show();
             Intent launchIntent = new Intent(this, ARActivity.class);
@@ -162,9 +162,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void writeUser(String email, String username, String phone) {
+    /*private void writeUser(String email, String username) {
         Post post = new Post();
         mDatabase.child("usuarios").child(email).setValue(post);
+    }*/
+
+    private void saveUserData(String uId, String email, String displayName) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference myRef = database.getReference("users");
+
+        myRef.setValue(email + "" + displayName);
     }
 
 }

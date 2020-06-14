@@ -1,21 +1,15 @@
 package com.example.arapp;
 
-import com.google.firebase.database.Exclude;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class Post {
 
-    public String email, username, phone;
+    public String email, username;
 
     public Post() {
 
     }
 
-    public Post(String email, String username, String phone) {
+    public Post(String email, String username) {
         this.email = email;
         this.username = username;
-        this.phone = phone;
     }
 }
