@@ -50,7 +50,7 @@
   },
   samplers: [
     {
-      file: 'src/main/assets/models\\arcticfoxdiffuse.png',
+      file: 'src/main/assets/models/arcticfoxdiffuse.png',
       name: 'arcticfoxdiffuse',
       pipeline_name: 'arcticfoxdiffuse.png',
     },

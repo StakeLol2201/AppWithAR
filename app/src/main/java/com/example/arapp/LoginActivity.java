@@ -29,6 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "GoogleActivity";
@@ -170,9 +173,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void saveUserData(String uId, String email, String displayName) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReference("users");
+        DatabaseReference userRef, emailRef, nameRef;
 
-        myRef.setValue(email + "" + displayName);
+        String trimName = displayName.replaceAll("\\s","").toLowerCase();
+
+        emailRef = database.getReference("users/" + trimName + "/" + "email");
+        nameRef = database.getReference("users/" + trimName + "/" + "name");
+
+        emailRef.setValue(email);
+        nameRef.setValue(displayName);
     }
 
 }

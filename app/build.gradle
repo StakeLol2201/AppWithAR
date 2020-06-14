@@ -3,7 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '30.0.0 rc1'
+    buildToolsVersion buildToolsVersion
     defaultConfig {
         applicationId "com.example.arapp"
         minSdkVersion 28
