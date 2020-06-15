@@ -3,9 +3,11 @@ package com.example.arapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.net.Uri;
-
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.MotionEvent;
 
 import com.google.ar.core.Anchor;
@@ -18,6 +20,9 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.io.File;
+import java.io.IOException;
+
 public class ARActivity extends AppCompatActivity {
 
     private ArFragment arFragment;
@@ -25,6 +30,13 @@ public class ARActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    public ProgressDialog mProgressDialog;
+
+    StorageConnection firebaseStorage = new StorageConnection();
+
+    String modelName = "arcticfox";
+
+    @SuppressLint("SdCardPath")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +49,21 @@ public class ARActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "INSERT_MODEL_NAME");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "model 3D");
 
+        StorageConnection storageConn = new StorageConnection();
+
+        try {
+            storageConn.getModelFiles("arcticfox");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.arcticfoxposed)
+                //.setSource(this, R.raw.arcticfoxposed)
+                .setSource(this, Uri.parse("/data/data/com.example.arapp/cache/model.sfb"))
                 .build()
                 .thenAccept(renderable -> modelRenderable = renderable)
                 .exceptionally(throwable -> {
@@ -67,9 +88,6 @@ public class ARActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed(){
-        System.exit(0);
-    }
+
 
 }

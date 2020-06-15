@@ -16,21 +16,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
+
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -45,6 +42,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private DatabaseReference mDatabase;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+
+    FirebaseConnection firebaseConnection = new FirebaseConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,10 +140,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         hideProgressDialog();
         if (user != null) {
 
-            saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
+            firebaseConnection.saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
 
             Toast.makeText(this, "Se ha iniciado sesión como " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-            Intent launchIntent = new Intent(this, ARActivity.class);
+            Intent launchIntent = new Intent(this, ChooseActivity.class);
             startActivityForResult(launchIntent, 0);
         } else {
             mStatusTextView.setText(R.string.signed_out);
@@ -163,25 +162,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.disconnectButton) {
             revokeAccess();
         }
-    }
-
-    /*private void writeUser(String email, String username) {
-        Post post = new Post();
-        mDatabase.child("usuarios").child(email).setValue(post);
-    }*/
-
-    private void saveUserData(String uId, String email, String displayName) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        DatabaseReference userRef, emailRef, nameRef;
-
-        String trimName = displayName.replaceAll("\\s","").toLowerCase();
-
-        emailRef = database.getReference("users/" + trimName + "/" + "email");
-        nameRef = database.getReference("users/" + trimName + "/" + "name");
-
-        emailRef.setValue(email);
-        nameRef.setValue(displayName);
     }
 
 }

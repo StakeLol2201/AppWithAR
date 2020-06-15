@@ -20,4 +20,5 @@
     <string name="disconnect">Disconnect</string>
     <string name="sign_out">Sign Out</string>
     <string name="model_3d"></string>
+    <string name="button">Button</string>
 </resources>
