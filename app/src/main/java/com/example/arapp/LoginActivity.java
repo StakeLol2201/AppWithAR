@@ -59,7 +59,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.signInButton).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.signOutButton).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.disconnectButton).setOnClickListener((View.OnClickListener) this);
-        mStatusTextView = findViewById(R.id.status);
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
