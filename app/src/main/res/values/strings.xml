@@ -21,4 +21,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="model_3d"></string>
     <string name="button">Button</string>
+    <string name="logo_app">logo-app</string>
+    <string name="icon_name">app_icon</string>
 </resources>

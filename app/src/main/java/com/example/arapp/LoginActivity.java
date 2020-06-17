@@ -145,7 +145,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Intent launchIntent = new Intent(this, ChooseActivity.class);
             startActivityForResult(launchIntent, 0);
         } else {
-            mStatusTextView.setText(R.string.signed_out);
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
         }
