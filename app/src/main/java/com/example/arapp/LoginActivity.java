@@ -138,10 +138,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-
             firebaseConnection.saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
-
-            Toast.makeText(this, "Se ha iniciado sesión como " + user.getDisplayName(), Toast.LENGTH_LONG).show();
             Intent launchIntent = new Intent(this, ChooseActivity.class);
             startActivityForResult(launchIntent, 0);
         } else {
