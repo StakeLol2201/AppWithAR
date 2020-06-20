@@ -1,14 +1,16 @@
 package com.example.arapp;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.os.CountDownTimer;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -18,17 +20,20 @@ import java.io.IOException;
 
 public class StorageConnection {
 
-
-    BaseActivity baseAct = new BaseActivity();
-
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
 
-    File newFile;
+    File newFile, MTL,OBJ,PNG,SFA,SFB;
 
     int Timer;
 
     public void getModelFiles(String modelName) throws IOException, InterruptedException {
+
+        MTL = new File("/data/data/com.example.arapp/cache/model.mtl");
+        PNG = new File("/data/data/com.example.arapp/cache/model.png");
+        OBJ = new File("/data/data/com.example.arapp/cache/model.obj");
+        SFA = new File("/data/data/com.example.arapp/cache/model.sfa");
+        SFB = new File("/data/data/com.example.arapp/cache/model.sfb");
 
         File f = new File(Environment.getDataDirectory() + "/data/com.example.arapp/cache/");
         File[] files = f.listFiles();
@@ -39,9 +44,17 @@ public class StorageConnection {
         }
 
         StorageReference gsPNGRef = storageRef.child("models/" + modelName + "/" + modelName + ".png");
-        File filePNG = File.createTempFile("model", ".png");
+        //File filePNG = File.createTempFile("model", ".png");
 
-        gsPNGRef.getFile(filePNG).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+
+        gsPNGRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+
+            }
+        });
+
+        /*gsPNGRef.getFile(filePNG).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 newFile = new File("/data/data/com.example.arapp/cache/model.png");
@@ -52,13 +65,19 @@ public class StorageConnection {
             public void onFailure(@NonNull Exception e) {
 
             }
-        });
+        }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                newFile = new File("/data/data/com.example.arapp/cache/model.png");
+                filePNG.renameTo(newFile);
+            }
+        });*/
 
-        Timer = 0;
-        while (!filePNG.exists() && Timer < 30) {
-            Thread.sleep(10000, 1000);
+        /*Timer = 0;
+        while (!filePNG.exists() && Timer < 60) {
+            Thread.sleep(500000, 1000);
             Timer++;
-        }
+        }*/
 
         StorageReference gsMTLRef = storageRef.child("models/" + modelName + "/" + modelName + ".mtl");
         File fileMTL = File.createTempFile("model", ".mtl");
@@ -74,11 +93,17 @@ public class StorageConnection {
             public void onFailure(@NonNull Exception e) {
 
             }
+        }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                File newFile = new File("/data/data/com.example.arapp/cache/model.mtl");
+                fileMTL.renameTo(newFile);
+            }
         });
 
         Timer = 0;
-        while (!fileMTL.exists() && Timer < 30) {
-            Thread.sleep(10000, 1000);
+        while (!fileMTL.exists() && Timer < 60) {
+            Thread.sleep(500000, 1000);
             Timer++;
         }
 
@@ -96,11 +121,17 @@ public class StorageConnection {
             public void onFailure(@NonNull Exception e) {
 
             }
+        }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                File newFile = new File("/data/data/com.example.arapp/cache/model.obj");
+                fileOBJ.renameTo(newFile);
+            }
         });
 
         Timer = 0;
-        while (!fileOBJ.exists() && Timer < 30) {
-            Thread.sleep(10000, 1000);
+        while (!fileOBJ.exists() && Timer < 60) {
+            Thread.sleep(500000, 1000);
             Timer++;
         }
 
@@ -118,11 +149,17 @@ public class StorageConnection {
             public void onFailure(@NonNull Exception e) {
 
             }
+        }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                File newFile = new File("/data/data/com.example.arapp/cache/model.sfa");
+                fileSFA.renameTo(newFile);
+            }
         });
 
         Timer = 0;
-        while (!fileSFA.exists() && Timer < 30) {
-            Thread.sleep(10000, 1000);
+        while (!fileSFA.exists() && Timer < 60) {
+            Thread.sleep(500000, 1000);
             Timer++;
         }
 
@@ -140,11 +177,17 @@ public class StorageConnection {
             public void onFailure(@NonNull Exception e) {
 
             }
+        }).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                File newFile = new File("/data/data/com.example.arapp/cache/model.sfb");
+                fileSFB.renameTo(newFile);
+            }
         });
 
         Timer = 0;
-        while (!fileSFB.exists() && Timer < 30) {
-            Thread.sleep(10000, 1000);
+        while (!fileSFB.exists() && Timer < 60) {
+            Thread.sleep(500000, 1000);
             Timer++;
         }
 

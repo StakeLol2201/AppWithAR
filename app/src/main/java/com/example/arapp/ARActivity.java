@@ -49,14 +49,6 @@ public class ARActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "INSERT_MODEL_NAME");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "model 3D");
 
-        StorageConnection storageConn = new StorageConnection();
-
-        try {
-            storageConn.getModelFiles("arcticfox");
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);

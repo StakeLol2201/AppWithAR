@@ -31,8 +31,6 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
-    //implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
 
     implementation 'com.google.ar:core:1.15.0'
@@ -63,7 +61,7 @@ dependencies {
 
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-/*sceneform.asset('src/main/assets/models/arcticfox.obj',
+/*sceneform.asset('/data/data/com.example.arapp/cache/model.obj',
         'default',
-        'src/main/assets/models/arcticfox.sfa',
-        'src/main/assets/models/arcticfox')*/
+        '/data/data/com.example.arapp/cache/model.sfa',
+        '/data/data/com.example.arapp/cache/model.sfb')*/
