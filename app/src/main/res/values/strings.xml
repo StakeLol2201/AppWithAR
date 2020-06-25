@@ -24,4 +24,5 @@
     <string name="logo_app">logo-app</string>
     <string name="icon_name">app_icon</string>
     <string name="showModel">Proyectar modelo</string>
+    <string name="accessDenied">El usuario no tiene acceso.</string>
 </resources>

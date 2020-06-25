@@ -32,7 +32,7 @@ public class FirebaseConnection {
 
     public void saveUserData(String uId, String email, String displayName) {
 
-        DatabaseReference userRef, emailRef, nameRef;
+        DatabaseReference userRef, emailRef, nameRef, idEmpresaRef;
 
         String trimName = displayName.replaceAll("\\s","").toLowerCase();
 

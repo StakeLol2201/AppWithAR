@@ -143,12 +143,47 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
+
             firebaseConnection.saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
 
-            
+            FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
+            DatabaseReference dbRef = dataBase.getReference("grantedAccess/" + user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/email");
 
-            Intent launchIntent = new Intent(this, ChooseActivity.class);
-            startActivityForResult(launchIntent, 0);
+            dbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue(String.class) != "") {
+
+                        Intent launchIntent = new Intent(getApplicationContext(), ChooseActivity.class);
+
+                        DatabaseReference userRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/idEmpresa");
+
+                        userRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue(String.class) != "notEnterprise") {
+
+                                    launchIntent.putExtra("idEmpresa", dataSnapshot.getValue(String.class));
+                                    startActivityForResult(launchIntent, 0);
+
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Esta cuenta no tiene una empresa asignada.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.accessDenied, Toast.LENGTH_LONG).show();
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getApplicationContext(), R.string.accessDenied, Toast.LENGTH_LONG).show();
+                }
+            });
         } else {
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);

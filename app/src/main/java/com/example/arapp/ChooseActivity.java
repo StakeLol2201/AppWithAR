@@ -42,8 +42,10 @@ public class ChooseActivity extends AppCompatActivity {
     ListView dataListView;
     Button showModel;
 
+    String idEmpresa;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference dbRef = database.getReference("models");
+    DatabaseReference dbRef;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
@@ -69,6 +71,11 @@ public class ChooseActivity extends AppCompatActivity {
 
         dataListView = findViewById(R.id.dataListView);
         showModel = findViewById(R.id.modelButton);
+
+        Bundle loginExtras = this.getIntent().getExtras();
+        idEmpresa = loginExtras.getString("idEmpresa");
+
+        dbRef = database.getReference("empresas/" + idEmpresa + "/");
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItems);
 
