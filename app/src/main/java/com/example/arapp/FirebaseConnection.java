@@ -1,21 +1,10 @@
 package com.example.arapp;
 
-import android.renderscript.Sampler;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class FirebaseConnection {
