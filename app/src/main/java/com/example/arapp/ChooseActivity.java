@@ -18,10 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,10 +30,16 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class ChooseActivity extends AppCompatActivity {
 
@@ -185,11 +189,11 @@ public class ChooseActivity extends AppCompatActivity {
 
     public void downloadFiles(String modelName) throws IOException {
 
-        MTL = new File("/data/data/com.example.arapp/cache/model.mtl");
-        PNG = new File("/data/data/com.example.arapp/cache/model.png");
-        OBJ = new File("/data/data/com.example.arapp/cache/model.obj");
-        SFA = new File("/data/data/com.example.arapp/cache/model.sfa");
-        SFB = new File("/data/data/com.example.arapp/cache/model.sfb");
+        MTL = new File("/data/data/com.example.arapp/cache/" + modelName + ".mtl");
+        PNG = new File("/data/data/com.example.arapp/cache/" + modelName + ".png");
+        OBJ = new File("/data/data/com.example.arapp/cache/" + modelName + ".obj");
+        SFA = new File("/data/data/com.example.arapp/cache/" + modelName + ".sfa");
+        SFB = new File("/data/data/com.example.arapp/cache/" + modelName + ".sfb");
 
         showProgressDialog();
 
@@ -207,67 +211,66 @@ public class ChooseActivity extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                StorageReference gsMTLRef = storageRef.child("models/" + modelName + "/" + modelName + ".mtl");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-                gsMTLRef.getFile(MTL).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+            }
+        });
 
-                        StorageReference gsOBJRef = storageRef.child("models/" + modelName + "/" + modelName + ".obj");
+        StorageReference gsMTLRef = storageRef.child("models/" + modelName + "/" + modelName + ".mtl");
 
-                        gsOBJRef.getFile(OBJ).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+        gsMTLRef.getFile(MTL).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                                StorageReference gsSFARef = storageRef.child("models/" + modelName + "/" + modelName + ".sfa");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-                                gsSFARef.getFile(SFA).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+            }
+        });
 
-                                        StorageReference gsSFBRef = storageRef.child("models/" + modelName + "/" + modelName + ".sfb");
+        StorageReference gsOBJRef = storageRef.child("models/" + modelName + "/" + modelName + ".obj");
 
-                                        gsSFBRef.getFile(SFB).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                            @Override
-                                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+        gsOBJRef.getFile(OBJ).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                                                hideProgressDialog();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-                                                Intent launchIntent = new Intent(getApplicationContext(), ARActivity.class);
-                                                startActivityForResult(launchIntent, 0);
+            }
+        });
 
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
+        StorageReference gsSFARef = storageRef.child("models/" + modelName + "/" + modelName + ".sfa");
 
-                                            }
-                                        });
+        gsSFARef.getFile(SFA).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-                                    }
-                                });
+            }
+        });
 
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+        StorageReference gsSFBRef = storageRef.child("models/" + modelName + "/" + modelName + ".sfb");
 
-                            }
-                        });
+        gsSFBRef.getFile(SFB).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>()  {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                hideProgressDialog();
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
+                Intent launchIntent = new Intent(getApplicationContext(), ARActivity.class);
+                launchIntent.putExtra("modelName", modelName);
+                startActivityForResult(launchIntent, 0);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -304,6 +307,40 @@ public class ChooseActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         hideProgressDialog();
+    }
+
+    public void unzip(File zipFile, File targerDirectory) throws IOException {
+        ZipInputStream zip = new ZipInputStream(
+                new BufferedInputStream(new FileInputStream(zipFile)));
+
+        try {
+
+            ZipEntry ze;
+            int count;
+            byte[] buffer = new byte[8192];
+
+            while ((ze = zip.getNextEntry()) != null) {
+
+                File file = new File(targerDirectory, ze.getName());
+                File dir = ze.isDirectory() ? file : file.getParentFile();
+
+                if (!dir.isDirectory() && !dir.mkdirs())
+                    throw new FileNotFoundException("Failed" + dir.getAbsolutePath());
+                if (ze.isDirectory())
+                    continue;
+
+                FileOutputStream fout = new FileOutputStream(file);
+
+                try {
+                    while ((count = zip.read(buffer)) != -1)
+                        fout.write(buffer, 0, count);
+                } finally {
+                    fout.close();
+                }
+            }
+        } finally {
+            zip.close();
+        }
     }
 
 }
