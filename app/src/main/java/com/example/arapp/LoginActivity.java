@@ -77,12 +77,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         showProgressDialog();
+
         updateUI(currentUser);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        showProgressDialog();
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -98,7 +98,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         showProgressDialog();
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        showProgressDialog();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
