@@ -61,7 +61,7 @@ dependencies {
 
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-/*sceneform.asset('/data/data/com.example.arapp/cache/model.obj',
+sceneform.asset('src/main/assets/stickhouse/stickhouse.obj',
         'default',
-        '/data/data/com.example.arapp/cache/model.sfa',
-        '/data/data/com.example.arapp/cache/model.sfb')*/
+        'src/main/assets/stickhouse/stickhouse.sfa',
+        'src/main/assets/stickhouse/stickhouse')

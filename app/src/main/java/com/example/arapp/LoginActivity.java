@@ -3,10 +3,13 @@ package com.example.arapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,12 +51,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    public ProgressDialog mProgressDialog;
+
     FirebaseConnection firebaseConnection = new FirebaseConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        showProgressDialog();
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -200,6 +207,34 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.disconnectButton) {
             revokeAccess();
         }
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    public void hideKeyboard(View view) {
+        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        hideProgressDialog();
     }
 
 }
