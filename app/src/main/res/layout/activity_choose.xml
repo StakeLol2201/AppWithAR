@@ -9,24 +9,29 @@
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     android:weightSum="10">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/dataListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:choiceMode="singleChoice"
+        android:layoutMode="opticalBounds"
+        android:overScrollMode="ifContentScrolls">
 
-        <ListView
-            android:id="@+id/dataListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="1" />
-    </ScrollView>
+    </ListView>
 
     <Button
         android:id="@+id/modelButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="15dp"
         android:layout_weight="9"
-        android:text="Proyectar Modelo" />
+        android:background="@drawable/circular_button"
+        android:text="@string/view_model_button"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

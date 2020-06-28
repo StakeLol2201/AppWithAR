@@ -60,8 +60,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        showProgressDialog();
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -81,11 +79,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        showProgressDialog();
         updateUI(currentUser);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        showProgressDialog();
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -99,6 +100,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        showProgressDialog();
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         showProgressDialog();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -148,7 +150,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
         if (user != null) {
 
             firebaseConnection.saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
@@ -170,10 +171,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.getValue(String.class) != "notEnterprise") {
 
+                                    hideProgressDialog();
+
                                     launchIntent.putExtra("idEmpresa", dataSnapshot.getValue(String.class));
                                     startActivityForResult(launchIntent, 0);
 
                                 } else {
+
+                                    hideProgressDialog();
+
                                     Toast.makeText(LoginActivity.this, "Esta cuenta no tiene una empresa asignada.", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -188,10 +194,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+                    hideProgressDialog();
                     Toast.makeText(getApplicationContext(), R.string.accessDenied, Toast.LENGTH_LONG).show();
                 }
             });
         } else {
+            hideProgressDialog();
             findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
         }
@@ -207,34 +215,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.disconnectButton) {
             revokeAccess();
         }
-    }
-
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-        mProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
-
-    public void hideKeyboard(View view) {
-        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        hideProgressDialog();
     }
 
 }

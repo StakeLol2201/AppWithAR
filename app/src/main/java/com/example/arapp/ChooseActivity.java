@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,33 +74,35 @@ public class ChooseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose);
 
+        this.setTitle("Seleccione un modelo");
+
         dataListView = findViewById(R.id.dataListView);
         showModel = findViewById(R.id.modelButton);
 
         Bundle loginExtras = this.getIntent().getExtras();
+
         idEmpresa = loginExtras.getString("idEmpresa");
-
         dbRef = database.getReference("empresas/" + idEmpresa + "/");
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItems);
-
         dataListView.setAdapter(adapter);
         dataListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
         showModel.setEnabled(false);
+
+        addChildEventListener();
 
         dataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 selectedPosition = position;
                 itemSelected = true;
                 showModel.setEnabled(true);
 
                 showModel.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View v) {
-                        String model = dataListView.getItemAtPosition(selectedPosition).toString();
-
+                        String model = dataListView.getItemAtPosition(selectedPosition).toString().toLowerCase().replaceAll("\\s","");
                         try {
                             downloadFiles(model);
                         } catch (IOException e) {
@@ -108,12 +111,8 @@ public class ChooseActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
         });
-
-        addChildEventListener();
-
     }
 
     private void addChildEventListener() {
@@ -341,6 +340,30 @@ public class ChooseActivity extends AppCompatActivity {
         } finally {
             zip.close();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+        exitDialog.setTitle("Cerrar aplicación");
+        exitDialog.setIcon(R.mipmap.ic_launcher);
+        exitDialog.setMessage("¿Seguro de cerrar la aplicación?")
+                .setCancelable(false)
+                .setPositiveButton("Cerrar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        moveTaskToBack(true);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    }
+                });
+        AlertDialog alert = exitDialog.create();
+        alert.show();
     }
 
 }

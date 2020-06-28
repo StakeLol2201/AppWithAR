@@ -34,13 +34,16 @@ public class ARActivity extends AppCompatActivity {
 
     StorageConnection firebaseStorage = new StorageConnection();
 
-    String modelName = "arcticfox";
+    String modelName;
 
     @SuppressLint("SdCardPath")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle intentExtras = this.getIntent().getExtras();
+        modelName = intentExtras.getString("modelName");
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -55,7 +58,7 @@ public class ARActivity extends AppCompatActivity {
 
         ModelRenderable.builder()
                 //.setSource(this, R.raw.arcticfoxposed)
-                .setSource(this, Uri.parse("/data/data/com.example.arapp/cache/model.sfb"))
+                .setSource(this, Uri.parse("/data/data/com.example.arapp/cache/" + modelName + ".sfb"))
                 .build()
                 .thenAccept(renderable -> modelRenderable = renderable)
                 .exceptionally(throwable -> {
