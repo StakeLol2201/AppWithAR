@@ -1,0 +1,13 @@
+# Blender3D MTL File: object.blend
+# Material Count: 1
+newmtl armadura_1.png_armgeminis.png
+Ns 3.921569
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.125000 0.125000 0.125000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd geminis.png
+
+

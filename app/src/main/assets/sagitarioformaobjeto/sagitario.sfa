@@ -1,0 +1,50 @@
+{
+  materials: [
+    {
+      name: 'armadura_armsag.jpg_a_armsagi.png',
+      parameters: [
+        {
+          baseColor: 'sagitario',
+        },
+        {
+          baseColorTint: [
+            0.51200000000000001,
+            0.51200000000000001,
+            0.51200000000000001,
+            1,
+          ],
+        },
+        {
+          metallic: 1,
+        },
+        {
+          roughness: 0.71059899999999998,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'src/main/assets/sagitarioformaobjeto/sagitario.obj',
+    name: 'sagitario',
+    recenter: 'root',
+    scale: 0.84232799999999997,
+  },
+  samplers: [
+    {
+      file: 'src/main/assets/sagitarioformaobjeto\\sagitario.png',
+      name: 'sagitario',
+      pipeline_name: 'sagitario.png',
+    },
+  ],
+  version: '0.54:2',
+}

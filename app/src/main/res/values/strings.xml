@@ -26,4 +26,8 @@
     <string name="showModel">Proyectar modelo</string>
     <string name="accessDenied">El usuario no tiene acceso.</string>
     <string name="view_model_button">Proyectar Modelo</string>
+    <string name="getting_model_files">Obteniendo archivos del modelo</string>
+    <string name="obtain_model_list">Obteniendo lista de modelos</string>
+    <string name="add_enterprise">Agregar empresa</string>
+    <string name="modify_enterprise">Modificar empresa</string>
 </resources>

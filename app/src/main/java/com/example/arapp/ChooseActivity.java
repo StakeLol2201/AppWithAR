@@ -6,13 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -67,7 +65,7 @@ public class ChooseActivity extends AppCompatActivity {
     private Boolean itemSelected = false;
     private int selectedPosition = 0;
 
-    File MTL,OBJ,PNG,SFA,SFB;
+    File MTL,OBJ,PNG,SFA,SFB, ZIP, Directory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,18 +75,22 @@ public class ChooseActivity extends AppCompatActivity {
         this.setTitle("Seleccione un modelo");
 
         dataListView = findViewById(R.id.dataListView);
-        showModel = findViewById(R.id.modelButton);
+        showModel = findViewById(R.id.addEnterprise);
 
         Bundle loginExtras = this.getIntent().getExtras();
 
         idEmpresa = loginExtras.getString("idEmpresa");
-        dbRef = database.getReference("empresas/" + idEmpresa + "/");
+        dbRef = database.getReference("models/");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItems);
         dataListView.setAdapter(adapter);
         dataListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         showModel.setEnabled(false);
 
+        showLoadDataDialog();
+
         addChildEventListener();
+
+        hideProgressDialog();
 
         dataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -119,9 +121,16 @@ public class ChooseActivity extends AppCompatActivity {
         ChildEventListener childListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                adapter.add(
-                        (String) dataSnapshot.child("modelName").getValue());
-                listKeys.add((String) dataSnapshot.child("modelName").getValue());
+
+                String modelIdEmrpesa = dataSnapshot.child("idEmpresa").getValue(String.class);
+
+                if (modelIdEmrpesa.equals(idEmpresa)) {
+
+                    adapter.add(
+                            (String) dataSnapshot.child("modelName").getValue());
+                    listKeys.add((String) dataSnapshot.child("modelName").getValue());
+                }
+
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -188,11 +197,9 @@ public class ChooseActivity extends AppCompatActivity {
 
     public void downloadFiles(String modelName) throws IOException {
 
-        MTL = new File("/data/data/com.example.arapp/cache/" + modelName + ".mtl");
-        PNG = new File("/data/data/com.example.arapp/cache/" + modelName + ".png");
-        OBJ = new File("/data/data/com.example.arapp/cache/" + modelName + ".obj");
-        SFA = new File("/data/data/com.example.arapp/cache/" + modelName + ".sfa");
-        SFB = new File("/data/data/com.example.arapp/cache/" + modelName + ".sfb");
+        ZIP = new File("/data/data/com.example.arapp/cache/" + modelName + ".zip");
+        Directory = new File("/data/data/com.example.arapp/cache/");
+
 
         showProgressDialog();
 
@@ -204,72 +211,24 @@ public class ChooseActivity extends AppCompatActivity {
             file.delete();
         }
 
-        StorageReference gsPNGRef = storageRef.child("models/" + modelName + "/" + modelName + ".png");
+        StorageReference gsZIPRef = storageRef.child("models/" + modelName + "/" + modelName + ".zip");
 
-        gsPNGRef.getFile(PNG).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        gsZIPRef.getFile(ZIP).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                try {
+                    unzip(ZIP, Directory);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+                    ZIP.delete();
 
-            }
-        });
+                    hideProgressDialog();
 
-        StorageReference gsMTLRef = storageRef.child("models/" + modelName + "/" + modelName + ".mtl");
-
-        gsMTLRef.getFile(MTL).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-        StorageReference gsOBJRef = storageRef.child("models/" + modelName + "/" + modelName + ".obj");
-
-        gsOBJRef.getFile(OBJ).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-        StorageReference gsSFARef = storageRef.child("models/" + modelName + "/" + modelName + ".sfa");
-
-        gsSFARef.getFile(SFA).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-        StorageReference gsSFBRef = storageRef.child("models/" + modelName + "/" + modelName + ".sfb");
-
-        gsSFBRef.getFile(SFB).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>()  {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                hideProgressDialog();
-
-                Intent launchIntent = new Intent(getApplicationContext(), ARActivity.class);
-                launchIntent.putExtra("modelName", modelName);
-                startActivityForResult(launchIntent, 0);
+                    Intent launchIntent = new Intent(getApplicationContext(), ARActivity.class);
+                    launchIntent.putExtra("modelName", modelName);
+                    startActivityForResult(launchIntent, 0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -280,10 +239,19 @@ public class ChooseActivity extends AppCompatActivity {
 
     }
 
+    public void showLoadDataDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.obtain_model_list));
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setMessage(getString(R.string.getting_model_files));
             mProgressDialog.setIndeterminate(true);
         }
         mProgressDialog.show();
@@ -295,20 +263,13 @@ public class ChooseActivity extends AppCompatActivity {
         }
     }
 
-    public void hideKeyboard(View view) {
-        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     @Override
     public void onStop() {
         super.onStop();
         hideProgressDialog();
     }
 
-    public void unzip(File zipFile, File targerDirectory) throws IOException {
+    public void unzip(File zipFile, File targetDirectory) throws IOException {
         ZipInputStream zip = new ZipInputStream(
                 new BufferedInputStream(new FileInputStream(zipFile)));
 
@@ -320,7 +281,7 @@ public class ChooseActivity extends AppCompatActivity {
 
             while ((ze = zip.getNextEntry()) != null) {
 
-                File file = new File(targerDirectory, ze.getName());
+                File file = new File(targetDirectory, ze.getName());
                 File dir = ze.isDirectory() ? file : file.getParentFile();
 
                 if (!dir.isDirectory() && !dir.mkdirs())

@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(LoginActivity.this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.webclientid_google))
@@ -157,8 +157,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue(String.class) != "") {
 
-                        Intent launchIntent = new Intent(getApplicationContext(), ChooseActivity.class);
-
                         DatabaseReference userRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/idEmpresa");
 
                         userRef.addValueEventListener(new ValueEventListener() {
@@ -166,10 +164,44 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.getValue(String.class) != "notEnterprise") {
 
-                                    hideProgressDialog();
+                                    String idEmpresa = dataSnapshot.getValue(String.class);
 
-                                    launchIntent.putExtra("idEmpresa", dataSnapshot.getValue(String.class));
-                                    startActivityForResult(launchIntent, 0);
+                                    DatabaseReference userTypeRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/userType");
+
+                                    userTypeRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            if (dataSnapshot.getValue(String.class) == "admin") {
+
+                                                hideProgressDialog();
+
+                                                Intent launchIntent = new Intent(getApplicationContext(), AdminActivity.class);
+                                                startActivityForResult(launchIntent, 0);
+
+                                            } else if (dataSnapshot.getValue(String.class) == "user") {
+
+                                                hideProgressDialog();
+
+                                                Intent launchIntent = new Intent(getApplicationContext(), ChooseActivity.class);
+                                                launchIntent.putExtra("idEmpresa", idEmpresa);
+                                                startActivityForResult(launchIntent, 0);
+
+                                            } else {
+
+                                                hideProgressDialog();
+
+                                                Toast.makeText(LoginActivity.this, ".", Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
 
                                 } else {
 
