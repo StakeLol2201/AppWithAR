@@ -162,7 +162,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         userRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue(String.class) != "notEnterprise") {
+                                if (!dataSnapshot.getValue(String.class).equals("notEnterprise")) {
 
                                     String idEmpresa = dataSnapshot.getValue(String.class);
 
@@ -172,14 +172,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                            if (dataSnapshot.getValue(String.class) == "admin") {
+                                            String userType = dataSnapshot.getValue(String.class);
+
+                                            if (userType.equals("admin")) {
 
                                                 hideProgressDialog();
 
                                                 Intent launchIntent = new Intent(getApplicationContext(), AdminActivity.class);
                                                 startActivityForResult(launchIntent, 0);
 
-                                            } else if (dataSnapshot.getValue(String.class) == "user") {
+                                            } else if (userType.equals("user")) {
 
                                                 hideProgressDialog();
 

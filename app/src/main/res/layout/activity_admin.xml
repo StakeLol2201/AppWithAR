@@ -5,20 +5,21 @@
     android:id="@+id/chooserLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-    android:weightSum="5">
+    android:weightSum="7">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_marginTop="10dp"
+        android:layout_weight="6"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/addEnterprise"
-            android:layout_width="match_parent"
+            android:id="@+id/listEnterprises"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
@@ -27,21 +28,7 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:background="@drawable/circular_button"
-            android:text="@string/add_enterprise"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/modifyEnterprise"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/circular_button"
-            android:text="@string/modify_enterprise"
+            android:text="@string/list_enterprises"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
@@ -49,12 +36,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/modifyEnterprise2"
-            android:layout_width="match_parent"
+            android:id="@+id/listUsers"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
@@ -63,22 +50,9 @@
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
             android:background="@drawable/circular_button"
-            android:text="@string/modify_enterprise"
+            android:text="@string/list_users"
             android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/addEnterprise2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/circular_button"
-            android:text="@string/add_enterprise"
-            android:textColor="#FFFFFF" />
     </LinearLayout>
 
 </LinearLayout>

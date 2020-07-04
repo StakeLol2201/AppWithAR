@@ -46,15 +46,13 @@ public class FirebaseConnection {
 
                 String userType = dataSnapshot.getValue(String.class);
 
-                if (userType != "admin")
+                if (!userType.equals("admin"))
                     userTypeRef.setValue("user");
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                userTypeRef.setValue("user");
 
             }
         });
@@ -65,15 +63,13 @@ public class FirebaseConnection {
 
                 String idEmpresa = dataSnapshot.getValue(String.class);
 
-                if (idEmpresa == "")
+                if (idEmpresa.equals(""))
                     idEmpresaRef.setValue("notEnterprise");
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                idEmpresaRef.setValue("notEnterprise");
 
             }
         });
