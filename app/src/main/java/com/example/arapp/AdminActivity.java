@@ -5,13 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener{
 
-    Button bntEmpresas, btnUsuarios;
-
-    Intent launchIntent = new Intent(AdminActivity.this, AdminModActivity.class);
+    Intent launchIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +20,12 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.listEnterprises) {
-            launchIntent.putExtra("listMod", "empresas");
+        if (i == R.id.addEnterprise) {
+            launchIntent = new Intent(AdminActivity.this, EnterprisesModActivity.class);
+            startActivityForResult(launchIntent,0);
         } else if (i == R.id.listUsers) {
-            launchIntent.putExtra("listMod", "usuarios");
+            launchIntent = new Intent(AdminActivity.this, ModUsersActivity.class);
+            startActivityForResult(launchIntent,0);
         }
     }
 

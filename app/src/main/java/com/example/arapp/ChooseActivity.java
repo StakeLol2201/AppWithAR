@@ -75,7 +75,7 @@ public class ChooseActivity extends AppCompatActivity {
         this.setTitle("Seleccione un modelo");
 
         dataListView = findViewById(R.id.dataListView);
-        showModel = findViewById(R.id.listEnterprises);
+        showModel = findViewById(R.id.addEnterprise);
 
         Bundle loginExtras = this.getIntent().getExtras();
 

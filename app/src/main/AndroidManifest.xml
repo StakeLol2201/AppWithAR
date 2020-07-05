@@ -16,7 +16,8 @@
         android:roundIcon="@drawable/arapp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminModActivity"></activity>
+        <activity android:name=".EnterprisesModActivity"></activity>
+        <activity android:name=".ModUsersActivity" />
         <activity android:name=".AdminActivity" />
         <activity
             android:name=".LoginActivity"
