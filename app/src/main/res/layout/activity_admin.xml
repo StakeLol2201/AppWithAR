@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/addEnterprise"
+            android:id="@+id/listEnterprises"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"

@@ -5,28 +5,38 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-public class AdminActivity extends AppCompatActivity implements View.OnClickListener{
+public class AdminActivity extends AppCompatActivity{
 
     Intent launchIntent;
+
+    Button listEnterprise, listUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-    }
+        listEnterprise.findViewById(R.id.listEnterprises);
+        listUsers.findViewById(R.id.listUsers);
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.addEnterprise) {
-            launchIntent = new Intent(AdminActivity.this, EnterprisesModActivity.class);
-            startActivityForResult(launchIntent,0);
-        } else if (i == R.id.listUsers) {
-            launchIntent = new Intent(AdminActivity.this, ModUsersActivity.class);
-            startActivityForResult(launchIntent,0);
-        }
+        listEnterprise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchIntent = new Intent(AdminActivity.this, EnterprisesModActivity.class);
+                startActivityForResult(launchIntent,0);
+            }
+        });
+
+        listUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchIntent = new Intent(AdminActivity.this, ModUsersActivity.class);
+                startActivityForResult(launchIntent,0);
+            }
+        });
+
     }
 
 }
