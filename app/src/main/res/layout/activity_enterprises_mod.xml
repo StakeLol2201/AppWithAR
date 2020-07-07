@@ -28,7 +28,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/listEnterprises"
+            android:id="@+id/addEnterprise"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"

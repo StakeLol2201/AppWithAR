@@ -11,6 +11,7 @@
     android:weightSum="7">
 
     <LinearLayout
+        android:id="@+id/frstListVertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
@@ -19,14 +20,13 @@
 
         <Button
             android:id="@+id/listEnterprises"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_weight="1"
             android:background="@drawable/circular_button"
             android:text="@string/list_enterprises"
             android:textColor="#FFFFFF" />
@@ -34,6 +34,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/scndListVertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="6"
@@ -41,14 +42,13 @@
 
         <Button
             android:id="@+id/listUsers"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_weight="1"
             android:background="@drawable/circular_button"
             android:text="@string/list_users"
             android:textColor="#FFFFFF" />

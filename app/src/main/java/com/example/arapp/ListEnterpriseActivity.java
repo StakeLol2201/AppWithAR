@@ -24,12 +24,10 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.ArrayList;
 
-public class EnterprisesModActivity extends AppCompatActivity {
+public class ListEnterpriseActivity extends AppCompatActivity {
 
     ListView dataListView;
-    Button showModel;
-
-    String idEmpresa;
+    Button addEnterprise, modEnterprise;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference dbRef;
@@ -49,8 +47,6 @@ public class EnterprisesModActivity extends AppCompatActivity {
     private Boolean itemSelected = false;
     private int selectedPosition = 0;
 
-    File MTL,OBJ,PNG,SFA,SFB, ZIP, Directory;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +55,8 @@ public class EnterprisesModActivity extends AppCompatActivity {
         this.setTitle("Seleccione empresa");
 
         dataListView = findViewById(R.id.dataListView);
-        showModel = findViewById(R.id.addEnterprise);
+        addEnterprise = findViewById(R.id.addEnterprise);
+        modEnterprise = findViewById(R.id.modEnterprise);
 
         Bundle loginExtras = this.getIntent().getExtras();
 
@@ -67,7 +64,6 @@ public class EnterprisesModActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItems);
         dataListView.setAdapter(adapter);
         dataListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        showModel.setEnabled(false);
 
         showLoadDataDialog();
 
@@ -81,9 +77,9 @@ public class EnterprisesModActivity extends AppCompatActivity {
 
                 selectedPosition = position;
                 itemSelected = true;
-                showModel.setEnabled(true);
+                modEnterprise.setEnabled(true);
 
-                showModel.setOnClickListener(new View.OnClickListener() {
+                modEnterprise.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
