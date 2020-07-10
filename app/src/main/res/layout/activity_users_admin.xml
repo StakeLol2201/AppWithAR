@@ -28,7 +28,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/addEnterprise"
+            android:id="@+id/modUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -36,26 +36,11 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/circular_button"
-            android:enabled="true"
-            android:text="@string/add_enterprise"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/modEnterprise"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="15dp"
-            android:layout_weight="1"
             android:background="@drawable/circular_button"
             android:enabled="false"
-            android:text="@string/modify_enterprise"
+            android:text="@string/modify_user"
             android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </LinearLayout>

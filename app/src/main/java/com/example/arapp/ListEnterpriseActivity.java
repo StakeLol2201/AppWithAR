@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ListEnterpriseActivity extends AppCompatActivity {
@@ -41,6 +41,8 @@ public class ListEnterpriseActivity extends AppCompatActivity {
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayList<String> listKeys = new ArrayList<String>();
 
+    Intent launchIntent;
+
     public ProgressDialog mProgressDialog;
 
     private EditText itemText;
@@ -50,7 +52,7 @@ public class ListEnterpriseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enterprises_mod);
+        setContentView(R.layout.activity_enterprises_admin);
 
         this.setTitle("Seleccione empresa");
 
@@ -88,6 +90,14 @@ public class ListEnterpriseActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+
+        addEnterprise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchIntent = new Intent(ListEnterpriseActivity.this, AddEnterpriseActivity.class);
+                startActivity(launchIntent);
             }
         });
 
