@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.arapp" >
+    package="com.example.arapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -15,12 +15,11 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/arapp"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".Testing"
-            android:label="@string/title_activity_testing"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:name=".AdministrationActivity"
+            android:label="@string/title_activity_administration"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ModUserActivity" />
         <activity android:name=".ModEnterpriseActivity" />
         <activity android:name=".AddEnterpriseActivity" />
@@ -29,7 +28,7 @@
         <activity android:name=".AdminActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

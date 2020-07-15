@@ -178,7 +178,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                                                 hideProgressDialog();
 
-                                                Intent launchIntent = new Intent(getApplicationContext(), AdminActivity.class);
+                                                Intent launchIntent = new Intent(getApplicationContext(), AdministrationActivity.class);
+                                                launchIntent.putExtra("adminPhotoURL",user.getPhotoUrl().toString());
+                                                launchIntent.putExtra("adminEmail", user.getEmail());
+                                                launchIntent.putExtra("adminName", user.getDisplayName());
                                                 startActivityForResult(launchIntent, 0);
 
                                             } else if (userType.equals("user")) {

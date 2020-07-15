@@ -36,15 +36,22 @@
     <string name="username_required">Texto requerido</string>
     <string name="enterpriseNameTextView">Nombre</string>
     <string name="enterpriseNameInput">Nombre de Empresa</string>
-    <string name="title_activity_testing">Testing</string>
+    <string name="title_activity_administration">AdministrationActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_contact">Contacto</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_principal">Inicio</string>
+    <string name="mainText">Bienvenido a ARAPP</string>
+    <string name="subMainText">Esta es una aplicación creada para prestar un apoyo y una manera más
+    fácil de presentar los modelos de los proyectos de una empresa inmobiliarias.</string>
+
+    <string name="menu_dataEnterprise">Datos Empresa</string>
+
+    <string name="menu_Models">Modelos</string>
+
+    <string name="todo">arapp_logo</string>
 </resources>
