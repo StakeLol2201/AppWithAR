@@ -26,7 +26,7 @@ public class FirebaseConnection {
 
     public void saveUserData(String uId, String email, String displayName) {
 
-        DatabaseReference userRef, emailRef, nameRef, idEmpresaRef, userTypeRef, setUserType;
+        DatabaseReference userRef, emailRef, nameRef, userTypeRef, setUserType;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -35,7 +35,6 @@ public class FirebaseConnection {
         emailRef = database.getReference("users/" + trimName + "/email");
         nameRef = database.getReference("users/" + trimName + "/name");
         userTypeRef = database.getReference("users/" + trimName + "/userType");
-        idEmpresaRef = database.getReference("users/" + trimName + "/idEmpresa");
 
         emailRef.setValue(email);
         nameRef.setValue(displayName);
@@ -56,24 +55,6 @@ public class FirebaseConnection {
 
             }
         });
-
-        idEmpresaRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                String idEmpresa = dataSnapshot.getValue(String.class);
-
-                if (idEmpresa.equals(""))
-                    idEmpresaRef.setValue("notEnterprise");
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
 
     }
 

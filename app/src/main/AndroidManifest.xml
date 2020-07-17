@@ -3,6 +3,7 @@
     package="com.example.arapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <uses-feature
         android:glEsVersion="0x00030000"

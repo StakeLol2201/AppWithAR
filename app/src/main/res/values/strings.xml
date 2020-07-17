@@ -50,8 +50,16 @@
     fácil de presentar los modelos de los proyectos de una empresa inmobiliarias.</string>
 
     <string name="menu_dataEnterprise">Datos Empresa</string>
+    <string name="enterpriseName">Nombre empresa :</string>
+    <string name="enterpriseRut">RUT Empresa: </string>
+    <string name="legalRepresentant">Representante legal: </string>
+    <string name="region">Región :</string>
+    <string name="comuna">Comuna: </string>
+    <string name="address">Dirección: </string>
 
     <string name="menu_Models">Modelos</string>
 
     <string name="todo">arapp_logo</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">Cerrar Sesión</string>
 </resources>

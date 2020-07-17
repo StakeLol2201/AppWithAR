@@ -200,7 +200,6 @@ public class ChooseActivity extends AppCompatActivity {
         ZIP = new File("/data/data/com.example.arapp/cache/" + modelName + ".zip");
         Directory = new File("/data/data/com.example.arapp/cache/");
 
-
         showProgressDialog();
 
         File f = new File(Environment.getDataDirectory() + "/data/com.example.arapp/cache/");

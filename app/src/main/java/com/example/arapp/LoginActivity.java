@@ -162,7 +162,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         userRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (!dataSnapshot.getValue(String.class).equals("notEnterprise")) {
 
                                     String idEmpresa = dataSnapshot.getValue(String.class);
 
@@ -189,7 +188,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                 hideProgressDialog();
 
                                                 Intent launchIntent = new Intent(getApplicationContext(), ChooseActivity.class);
-                                                launchIntent.putExtra("idEmpresa", idEmpresa);
                                                 startActivityForResult(launchIntent, 0);
 
                                             } else {
@@ -208,12 +206,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         }
                                     });
 
-                                } else {
-
-                                    hideProgressDialog();
-
-                                    Toast.makeText(LoginActivity.this, "Esta cuenta no tiene una empresa asignada.", Toast.LENGTH_SHORT).show();
-                                }
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
