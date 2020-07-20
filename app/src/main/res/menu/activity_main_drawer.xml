@@ -11,7 +11,11 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/icons_models"
-            android:title="@string/menu_Models" />
+            android:title="@string/menu_models_house" />
+        <item
+            android:id="@+id/nav_models_departament"
+            android:icon="@drawable/icons_models"
+            android:title="@string/menu_models_department" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/icons_enterprise_data"

@@ -79,7 +79,6 @@ public class ChooseActivity extends AppCompatActivity {
 
         Bundle loginExtras = this.getIntent().getExtras();
 
-        idEmpresa = loginExtras.getString("idEmpresa");
         dbRef = database.getReference("models/");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, listItems);
         dataListView.setAdapter(adapter);
@@ -122,14 +121,9 @@ public class ChooseActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                String modelIdEmrpesa = dataSnapshot.child("idEmpresa").getValue(String.class);
-
-                if (modelIdEmrpesa.equals(idEmpresa)) {
-
-                    adapter.add(
-                            (String) dataSnapshot.child("modelName").getValue());
-                    listKeys.add((String) dataSnapshot.child("modelName").getValue());
-                }
+                adapter.add(
+                        (String) dataSnapshot.child("modelName").getValue());
+                listKeys.add((String) dataSnapshot.child("modelName").getValue());
 
             }
             @Override
@@ -222,7 +216,7 @@ public class ChooseActivity extends AppCompatActivity {
 
                     hideProgressDialog();
 
-                    Intent launchIntent = new Intent(getApplicationContext(), ARActivity.class);
+                    Intent launchIntent = new Intent(ChooseActivity.this, ARActivity.class);
                     launchIntent.putExtra("modelName", modelName);
                     startActivityForResult(launchIntent, 0);
                 } catch (IOException e) {

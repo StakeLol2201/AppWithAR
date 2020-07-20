@@ -1,4 +1,4 @@
-package com.example.arapp.ui.gallery;
+package com.example.arapp.ui.main;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,12 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -49,7 +47,14 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class GalleryFragment extends Fragment {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class PlaceholderFragment extends Fragment {
+
+    private static final String ARG_SECTION_NUMBER = "section_number";
+
+    private PageViewModel pageViewModel;
 
     //Models Fragment
 
@@ -78,56 +83,82 @@ public class GalleryFragment extends Fragment {
 
     //End Models Fragment
 
-    private GalleryViewModel galleryViewModel;
+    public static PlaceholderFragment newInstance(int index) {
+        PlaceholderFragment fragment = new PlaceholderFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_SECTION_NUMBER, index);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        //MODEL FRAGMENT
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
+        int index = 1;
+        if (getArguments() != null) {
+            index = getArguments().getInt(ARG_SECTION_NUMBER);
+        }
+        pageViewModel.setIndex(index);
+    }
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+    @Override
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_choose_model, container, false);
 
-        dataListView = root.findViewById(R.id.dataListView);
-        showModel = root.findViewById(R.id.showModel);
-        dbRef = database.getReference("models/");
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_single_choice, listItems);
-        dataListView.setAdapter(adapter);
-        dataListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        addChildEventListener();
-        dataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+        pageViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedPosition = position;
-                itemSelected = true;
-                showModel.setEnabled(true);
-                showModel.setOnClickListener(new View.OnClickListener() {
+            public void onChanged(@Nullable String s) {
+
+                //MODEL FRAGMENT
+
+                ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+                dataListView = root.findViewById(R.id.dataListView);
+                showModel = root.findViewById(R.id.showModel);
+                dbRef = database.getReference("models/");
+                adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_single_choice, listItems);
+                dataListView.setAdapter(adapter);
+                dataListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                addChildEventListener(s);
+                dataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        selectedPosition = position;
+                        itemSelected = true;
+                        showModel.setEnabled(true);
+                        showModel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                        if (networkInfo != null && networkInfo.isConnected()) {
-                            String model = dataListView.getItemAtPosition(selectedPosition).toString().toLowerCase().replaceAll("\\s", "");
-                            try {
-                                downloadFiles(model);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                if (networkInfo != null && networkInfo.isConnected()) {
+                                    String model = dataListView.getItemAtPosition(selectedPosition).toString().toLowerCase().replaceAll("\\s", "");
+                                    try {
+                                        downloadFiles(model);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                } else {
+
+                                }
+
                             }
-
-                        } else {
-
-                        }
-
+                        });
                     }
                 });
+
+                showModel.setEnabled(false);
+
+                //END MODEL FRAGMENT
+
             }
         });
-
-        showModel.setEnabled(false);
-
-        //END MODEL FRAGMENT
-
         return root;
     }
 
@@ -207,16 +238,21 @@ public class GalleryFragment extends Fragment {
         });
 
     }
-    private void addChildEventListener() {
+    private void addChildEventListener(String modelType) {
         ChildEventListener childListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                if (dataSnapshot.child("modelType").getValue(String.class).equals("casas")) {
+                String model = dataSnapshot.child("modelType").getValue(String.class);
+
+                if (model.equals(modelType)) {
+
                     adapter.add(
                             (String) dataSnapshot.child("modelName").getValue());
                     listKeys.add((String) dataSnapshot.child("modelName").getValue());
+
                 }
+
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

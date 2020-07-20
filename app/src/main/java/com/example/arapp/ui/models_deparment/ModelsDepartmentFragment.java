@@ -1,4 +1,4 @@
-package com.example.arapp.ui.gallery;
+package com.example.arapp.ui.models_deparment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,14 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.arapp.ARActivity;
@@ -49,7 +45,7 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class GalleryFragment extends Fragment {
+public class ModelsDepartmentFragment extends Fragment {
 
     //Models Fragment
 
@@ -78,14 +74,12 @@ public class GalleryFragment extends Fragment {
 
     //End Models Fragment
 
-    private GalleryViewModel galleryViewModel;
+    private ModelsDepartmentViewModel modelsDepartmentViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        //MODEL FRAGMENT
+        modelsDepartmentViewModel = ViewModelProviders.of(this).get(ModelsDepartmentViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_models_departments, container, false);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -212,11 +206,12 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                if (dataSnapshot.child("modelType").getValue(String.class).equals("casas")) {
+                if (dataSnapshot.child("modelType").getValue(String.class).equals("departamentos")) {
                     adapter.add(
                             (String) dataSnapshot.child("modelName").getValue());
                     listKeys.add((String) dataSnapshot.child("modelName").getValue());
                 }
+
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

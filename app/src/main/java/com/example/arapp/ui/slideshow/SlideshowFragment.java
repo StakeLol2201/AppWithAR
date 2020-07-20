@@ -56,7 +56,9 @@ public class SlideshowFragment extends Fragment {
 
         logoEmpresa = root.findViewById(R.id.enterpriseLogo);
 
-        logoEmpresa.setImageBitmap(DownloadLogo());
+        Bitmap logoEnterprise = DownloadLogo();
+
+        logoEmpresa.setImageBitmap(logoEnterprise);
 
         FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = dataBase.getReference("empresas/engelyvolkers/");
@@ -85,21 +87,28 @@ public class SlideshowFragment extends Fragment {
     public Bitmap DownloadLogo() {
         enterpriseLogo = new File("/data/data/com.example.arapp/files/enterpriselogo.jpg");
 
-        enterpriseLogo.delete();
-
         ProgressDialog dialog = ProgressDialog.show(getActivity(), "Descargando información", "Estamos obteniendo la información de la empresa, por favor espere.", true);
-        StorageReference logoDownload = storageRef.child("logo/E&V_Logo_CMYK.jpg");
 
-        logoDownload.getFile(enterpriseLogo).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                dialog.dismiss();
-                logo = BitmapFactory.decodeFile(enterpriseLogo.getPath());
+        if (!enterpriseLogo.exists()) {
 
-            }
-        });
+            StorageReference logoDownload = storageRef.child("logo/E&V_Logo_CMYK.jpg");
 
+            logoDownload.getFile(enterpriseLogo).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                    logo = BitmapFactory.decodeFile(enterpriseLogo.getPath());
+
+                }
+            });
+
+        } else {
+            logo = BitmapFactory.decodeFile(enterpriseLogo.getPath());
+        }
+
+        dialog.dismiss();
 
         return logo;
+
     }
 }

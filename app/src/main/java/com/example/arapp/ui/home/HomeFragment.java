@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -20,19 +21,20 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
+    TextView mainText, subMainText;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        /*final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
+        mainText = root.findViewById(R.id.mainText);
+        subMainText = root.findViewById(R.id.subMainText);
+
+        mainText.setText(getString(R.string.mainText));
+        subMainText.setText(getString(R.string.subMainText));
+
         return root;
     }
 }

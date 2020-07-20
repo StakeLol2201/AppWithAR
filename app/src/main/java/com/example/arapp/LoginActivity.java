@@ -3,13 +3,18 @@ package com.example.arapp;
 import androidx.annotation.NonNull;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.filament.Material;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -18,6 +23,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -79,6 +85,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         showProgressDialog();
 
         updateUI(currentUser);
+
     }
 
     @Override
@@ -150,76 +157,57 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             firebaseConnection.saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
 
             FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
-            DatabaseReference dbRef = dataBase.getReference("grantedAccess/" + user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/email");
+            DatabaseReference userRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/idEmpresa");
 
-            dbRef.addValueEventListener(new ValueEventListener() {
+            userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue(String.class) != "") {
 
-                        DatabaseReference userRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/idEmpresa");
+                    DatabaseReference userTypeRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/userType");
 
-                        userRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    userTypeRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                    String idEmpresa = dataSnapshot.getValue(String.class);
+                            String userType = dataSnapshot.getValue(String.class);
 
-                                    DatabaseReference userTypeRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/userType");
+                            if (userType.equals("admin")) {
 
-                                    userTypeRef.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                hideProgressDialog();
 
-                                            String userType = dataSnapshot.getValue(String.class);
+                                Intent launchIntent = new Intent(getApplicationContext(), AdministrationActivity.class);
+                                launchIntent.putExtra("adminPhotoURL",user.getPhotoUrl().toString());
+                                launchIntent.putExtra("adminEmail", user.getEmail());
+                                launchIntent.putExtra("adminName", user.getDisplayName());
+                                startActivityForResult(launchIntent, 0);
 
-                                            if (userType.equals("admin")) {
+                            } else if (userType.equals("user")) {
 
-                                                hideProgressDialog();
+                                hideProgressDialog();
 
-                                                Intent launchIntent = new Intent(getApplicationContext(), AdministrationActivity.class);
-                                                launchIntent.putExtra("adminPhotoURL",user.getPhotoUrl().toString());
-                                                launchIntent.putExtra("adminEmail", user.getEmail());
-                                                launchIntent.putExtra("adminName", user.getDisplayName());
-                                                startActivityForResult(launchIntent, 0);
+                                Intent launchIntent = new Intent(getApplicationContext(), ChooseModelActivity.class);
+                                startActivityForResult(launchIntent, 0);
 
-                                            } else if (userType.equals("user")) {
+                            } else {
 
-                                                hideProgressDialog();
+                                hideProgressDialog();
 
-                                                Intent launchIntent = new Intent(getApplicationContext(), ChooseActivity.class);
-                                                startActivityForResult(launchIntent, 0);
-
-                                            } else {
-
-                                                hideProgressDialog();
-
-                                                Toast.makeText(LoginActivity.this, ".", Toast.LENGTH_SHORT).show();
-
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
+                                Toast.makeText(LoginActivity.this, ".", Toast.LENGTH_SHORT).show();
 
                             }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
-                    } else {
-                        Toast.makeText(getApplicationContext(), R.string.accessDenied, Toast.LENGTH_LONG).show();
-                    }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    hideProgressDialog();
-                    Toast.makeText(getApplicationContext(), R.string.accessDenied, Toast.LENGTH_LONG).show();
+
                 }
             });
         } else {

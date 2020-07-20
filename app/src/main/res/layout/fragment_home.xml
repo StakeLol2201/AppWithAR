@@ -35,30 +35,27 @@
                 android:id="@+id/profilePhoto"/>
 
             <TextView
+                android:id="@+id/mainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginStart="8dp"
-                android:textSize="28sp"
-                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:textAppearance="?attr/textAppearanceHeadline1"
-                android:id="@+id/mainText"
-                android:text="@string/mainText"/>
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/subMainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="16dp"
                 android:justificationMode="inter_word"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="20sp"
-                android:id="@+id/subMainText"
-                android:text="@string/subMainText"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 

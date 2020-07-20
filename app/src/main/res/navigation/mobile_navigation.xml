@@ -14,8 +14,14 @@
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.arapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_Models"
+        android:label="@string/menu_models_house"
         tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_models_departament"
+        android:name="com.example.arapp.ui.models_deparment.ModelsDepartmentFragment"
+        android:label="@string/menu_models_department"
+        tools:layout="@layout/fragment_models_departments" />
 
     <fragment
         android:id="@+id/nav_slideshow"
