@@ -148,7 +148,7 @@ public class AdministrationActivity extends AppCompatActivity {
         adminEmail.setText(email);
         adminName.setText(name);
 
-        new DownloadImageTask((ImageView) findViewById(R.id.imageAdminPhoto)).execute(photoURL);
+        new DownloadImageTask(findViewById(R.id.imageAdminPhoto)).execute(photoURL);
 
         //END HOME FRAGMENT
 

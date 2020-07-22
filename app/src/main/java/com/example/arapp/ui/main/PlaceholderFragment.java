@@ -196,6 +196,7 @@ public class PlaceholderFragment extends Fragment {
             zip.close();
         }
     }
+
     public void downloadFiles(String modelName) throws IOException {
 
         ZIP = new File("/data/data/com.example.arapp/cache/" + modelName + ".zip");
@@ -244,6 +245,7 @@ public class PlaceholderFragment extends Fragment {
         }
 
     }
+
     private void addChildEventListener(String modelType) {
         ChildEventListener childListener = new ChildEventListener() {
             @Override
@@ -260,6 +262,7 @@ public class PlaceholderFragment extends Fragment {
                 }
 
             }
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 

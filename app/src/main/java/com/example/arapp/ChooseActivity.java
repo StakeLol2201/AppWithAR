@@ -173,7 +173,7 @@ public class ChooseActivity extends AppCompatActivity {
             listKeys.clear();
 
             while (iterator.hasNext()) {
-                DataSnapshot next = (DataSnapshot) iterator.next();
+                DataSnapshot next = iterator.next();
 
                 String match = (String) next.child("modelName").getValue();
                 String key = next.getKey();

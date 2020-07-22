@@ -23,7 +23,7 @@ public class StorageConnection {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
 
-    File newFile, MTL,OBJ,PNG,SFA,SFB;
+    File newFile, MTL, OBJ, PNG, SFA, SFB;
 
     int Timer;
 

@@ -66,8 +66,8 @@ public class SlideshowFragment extends Fragment {
                 rutEmpresa.setText(getString(R.string.enterpriseRut) + " " + snapshot.child("rut empresa").getValue(String.class));
                 representanteLegal.setText(getString(R.string.legalRepresentant) + " " + snapshot.child("representante legal").getValue(String.class));
                 direccion.setText(getString(R.string.address) + " " + snapshot.child("direccion").getValue(String.class)
-                    + ", " + snapshot.child("comuna").getValue(String.class)
-                    + ", " + snapshot.child("region").getValue(String.class));
+                        + ", " + snapshot.child("comuna").getValue(String.class)
+                        + ", " + snapshot.child("region").getValue(String.class));
             }
 
             @Override

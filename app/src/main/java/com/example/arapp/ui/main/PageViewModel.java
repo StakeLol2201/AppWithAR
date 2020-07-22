@@ -14,8 +14,7 @@ public class PageViewModel extends ViewModel {
         public String apply(Integer input) {
             if (input == 1) {
                 return "casas";
-            }
-            else if (input == 2) {
+            } else if (input == 2) {
                 return "departamentos";
             } else {
                 return "ERROR";

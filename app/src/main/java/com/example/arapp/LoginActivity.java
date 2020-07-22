@@ -68,9 +68,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .requestIdToken(getString(R.string.webclientid_google))
                 .requestEmail()
                 .build();
-        findViewById(R.id.signInButton).setOnClickListener((View.OnClickListener) this);
-        findViewById(R.id.signOutButton).setOnClickListener((View.OnClickListener) this);
-        findViewById(R.id.disconnectButton).setOnClickListener((View.OnClickListener) this);
+        findViewById(R.id.signInButton).setOnClickListener(this);
+        findViewById(R.id.signOutButton).setOnClickListener(this);
+        findViewById(R.id.disconnectButton).setOnClickListener(this);
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -157,13 +157,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             firebaseConnection.saveUserData(user.getUid(), user.getEmail(), user.getDisplayName());
 
             FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
-            DatabaseReference userRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/idEmpresa");
+            DatabaseReference userRef = dataBase.getReference("users/" + user.getDisplayName().replaceAll("\\s", "").toLowerCase() + "/idEmpresa");
 
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    DatabaseReference userTypeRef = dataBase.getReference("users/"+ user.getDisplayName().replaceAll("\\s","").toLowerCase() + "/userType");
+                    DatabaseReference userTypeRef = dataBase.getReference("users/" + user.getDisplayName().replaceAll("\\s", "").toLowerCase() + "/userType");
 
                     userTypeRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -176,7 +176,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 hideProgressDialog();
 
                                 Intent launchIntent = new Intent(getApplicationContext(), AdministrationActivity.class);
-                                launchIntent.putExtra("adminPhotoURL",user.getPhotoUrl().toString());
+                                launchIntent.putExtra("adminPhotoURL", user.getPhotoUrl().toString());
                                 launchIntent.putExtra("adminEmail", user.getEmail());
                                 launchIntent.putExtra("adminName", user.getDisplayName());
                                 startActivityForResult(launchIntent, 0);
@@ -205,6 +205,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     });
 
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
