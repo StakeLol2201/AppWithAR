@@ -69,7 +69,7 @@ public class ModelsDepartmentFragment extends Fragment {
     private Boolean itemSelected = false;
     private int selectedPosition = 0;
 
-    File ZIP, Directory;
+    File SFB, ZIP, Directory;
     Boolean isConencted;
 
     //End Models Fragment
@@ -161,44 +161,58 @@ public class ModelsDepartmentFragment extends Fragment {
     public void downloadFiles(String modelName) throws IOException {
 
         ZIP = new File("/data/data/com.example.arapp/cache/" + modelName + ".zip");
+        SFB = new File("/data/data/com.example.arapp/cache/" + modelName + ".sfb");
         Directory = new File("/data/data/com.example.arapp/cache/");
 
         ProgressDialog dialog = ProgressDialog.show(getActivity(), "Loading...", "Please Wait", true);
 
-        File f = new File(Environment.getDataDirectory() + "/data/com.example.arapp/cache/");
+        if (!SFB.exists()) {
+
+            StorageReference gsZIPRef = storageRef.child("models/" + modelName + "/" + modelName + ".zip");
+
+            gsZIPRef.getFile(ZIP).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    try {
+                        unzip(ZIP, Directory);
+
+                        ZIP.delete();
+
+                        dialog.dismiss();
+
+                        Intent launchIntent = new Intent(getActivity(), ARActivity.class);
+                        launchIntent.putExtra("modelName", modelName);
+                        startActivityForResult(launchIntent, 0);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+
+        } else {
+
+            dialog.dismiss();
+
+            Intent launchIntent = new Intent(getActivity(), ARActivity.class);
+            launchIntent.putExtra("modelName", modelName);
+            startActivityForResult(launchIntent, 0);
+        }
+
+
+
+        /*File f = new File(Environment.getDataDirectory() + "/data/com.example.arapp/cache/");
         File[] files = f.listFiles();
 
         for (int i = 0; i < files.length; i++) {
             File file = files[i];
             file.delete();
-        }
-
-        StorageReference gsZIPRef = storageRef.child("models/" + modelName + "/" + modelName + ".zip");
-
-        gsZIPRef.getFile(ZIP).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                try {
-                    unzip(ZIP, Directory);
-
-                    ZIP.delete();
-
-                    dialog.dismiss();
-
-                    Intent launchIntent = new Intent(getActivity(), ARActivity.class);
-                    launchIntent.putExtra("modelName", modelName);
-                    startActivityForResult(launchIntent, 0);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
+        }*/
 
     }
     private void addChildEventListener() {

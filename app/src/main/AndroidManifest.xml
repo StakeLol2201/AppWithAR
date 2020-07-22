@@ -25,7 +25,6 @@
             android:name=".AdministrationActivity"
             android:label="@string/title_activity_administration"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddEnterpriseActivity" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

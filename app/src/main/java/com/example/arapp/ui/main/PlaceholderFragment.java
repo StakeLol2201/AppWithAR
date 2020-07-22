@@ -78,7 +78,7 @@ public class PlaceholderFragment extends Fragment {
     private Boolean itemSelected = false;
     private int selectedPosition = 0;
 
-    File ZIP, Directory;
+    File SFB, ZIP, Directory;
     Boolean isConencted;
 
     //End Models Fragment
@@ -108,21 +108,21 @@ public class PlaceholderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_choose_model, container, false);
 
-
-
         pageViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 
                 //MODEL FRAGMENT
 
-                ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                ConnectivityManager connectivityManager = (ConnectivityManager) getContext()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
                 dataListView = root.findViewById(R.id.dataListView);
                 showModel = root.findViewById(R.id.showModel);
                 dbRef = database.getReference("models/");
-                adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_single_choice, listItems);
+                adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                        android.R.layout.simple_list_item_single_choice, listItems);
                 dataListView.setAdapter(adapter);
                 dataListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 addChildEventListener(s);
@@ -137,7 +137,8 @@ public class PlaceholderFragment extends Fragment {
                             public void onClick(View v) {
 
                                 if (networkInfo != null && networkInfo.isConnected()) {
-                                    String model = dataListView.getItemAtPosition(selectedPosition).toString().toLowerCase().replaceAll("\\s", "");
+                                    String model = dataListView.getItemAtPosition(selectedPosition)
+                                            .toString().toLowerCase().replaceAll("\\s", "");
                                     try {
                                         downloadFiles(model);
                                     } catch (IOException e) {
@@ -198,44 +199,49 @@ public class PlaceholderFragment extends Fragment {
     public void downloadFiles(String modelName) throws IOException {
 
         ZIP = new File("/data/data/com.example.arapp/cache/" + modelName + ".zip");
+        SFB = new File("/data/data/com.example.arapp/cache/" + modelName + ".sfb");
         Directory = new File("/data/data/com.example.arapp/cache/");
 
         ProgressDialog dialog = ProgressDialog.show(getActivity(), "Loading...", "Please Wait", true);
 
-        File f = new File(Environment.getDataDirectory() + "/data/com.example.arapp/cache/");
-        File[] files = f.listFiles();
+        if (!SFB.exists()) {
 
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            file.delete();
-        }
+            StorageReference gsZIPRef = storageRef.child("models/" + modelName + "/" + modelName + ".zip");
 
-        StorageReference gsZIPRef = storageRef.child("models/" + modelName + "/" + modelName + ".zip");
+            gsZIPRef.getFile(ZIP).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    try {
+                        unzip(ZIP, Directory);
 
-        gsZIPRef.getFile(ZIP).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                try {
-                    unzip(ZIP, Directory);
+                        ZIP.delete();
 
-                    ZIP.delete();
+                        dialog.dismiss();
 
-                    dialog.dismiss();
+                        Intent launchIntent = new Intent(getActivity(), ARActivity.class);
+                        launchIntent.putExtra("modelName", modelName);
+                        startActivityForResult(launchIntent, 0);
 
-                    Intent launchIntent = new Intent(getActivity(), ARActivity.class);
-                    launchIntent.putExtra("modelName", modelName);
-                    startActivityForResult(launchIntent, 0);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-            }
-        });
+                }
+            });
+
+        } else {
+
+            dialog.dismiss();
+
+            Intent launchIntent = new Intent(getActivity(), ARActivity.class);
+            launchIntent.putExtra("modelName", modelName);
+            startActivityForResult(launchIntent, 0);
+
+        }
 
     }
     private void addChildEventListener(String modelType) {

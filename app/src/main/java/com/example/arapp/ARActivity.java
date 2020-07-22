@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.MotionEvent;
 
 import com.google.ar.core.Anchor;
@@ -19,9 +18,6 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import java.io.File;
-import java.io.IOException;
 
 public class ARActivity extends AppCompatActivity {
 
@@ -40,7 +36,7 @@ public class ARActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_arfragment);
 
         Bundle intentExtras = this.getIntent().getExtras();
         modelName = intentExtras.getString("modelName");
